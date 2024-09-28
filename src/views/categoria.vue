@@ -43,10 +43,16 @@
     </ion-header>
 
     <ion-content>
-      <ion-breadcrumb>
-        <ion-breadcrumb-item href="/home">Inicio</ion-breadcrumb-item>
-        <ion-breadcrumb-item active>Catálogo</ion-breadcrumb-item>
-      </ion-breadcrumb>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-breadcrumbs>
+          <ion-breadcrumb href="/home">Inicio</ion-breadcrumb>
+          <ion-breadcrumb href="/categoria">Categoría</ion-breadcrumb>
+          <ion-breadcrumb>Detalle</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </ion-toolbar>
 
       <!-- Iconos en la parte superior -->
       <ion-grid>
@@ -243,13 +249,7 @@ ion-toolbar {
   color: #fff; /* Texto en blanco */
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 20px; /* Espaciado superior */
-}
-
-.faq {
-  margin: 15px 0;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
+  margin: 20px 0; /* Margen superior e inferior */
 }
 
 .faq-question {
@@ -261,7 +261,7 @@ ion-toolbar {
 /* Estilo de contacto */
 .contact-section {
   padding: 20px;
-  background-color: #3a80e9;
+  background-color: #f0f0f0;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 20px 0; /* Margen superior e inferior */

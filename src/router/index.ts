@@ -3,6 +3,9 @@ import { RouteRecordRaw } from 'vue-router';
 import inicio from '../views/inicio.vue';
 import join from '../views/join.vue';
 import login from '../views/login.vue';
+import categoria from '../views/categoria.vue';
+import producto from '../views/producto.vue';
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -23,6 +26,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/login',
     name: 'Login',
     component: login
+  },
+  {
+    path: '/categoria',
+    name: 'categoria',
+    component: categoria
+  },
+  {
+    path: '/producto',
+    name: 'producto',
+    component: producto
   }
 ]
 
