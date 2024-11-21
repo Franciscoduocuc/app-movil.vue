@@ -42,6 +42,29 @@
       </ion-toolbar>
     </ion-header>
 
+    <ion-toolbar>
+      <ion-breadcrumbs>
+        <ion-breadcrumb href="/home">Inicio</ion-breadcrumb>
+        <ion-breadcrumb href="/login">iniciar sesión</ion-breadcrumb>
+        <ion-breadcrumb href="/join">registrarse</ion-breadcrumb>
+      </ion-breadcrumbs>
+    </ion-toolbar>
+
+
+    <ion-footer class="footer">
+      <ion-toolbar>
+        <ion-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2" class="ion-padding icon-col" v-for="icon in icons" :key="icon.name">
+                <ion-icon :icon="icon.icon" @click="iconClick(icon.name)"></ion-icon>
+              </ion-col>
+            </ion-row>
+         </ion-grid>
+       </ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
     <ion-content>
       <section class="form-register">
         <h4>Registro</h4>
@@ -64,9 +87,48 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { flameOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
+import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar  } from '@ionic/vue';
 
+// Usamos Vue Router para la navegación
 const router = useRouter();
+const goTologin = () => {
+  router.push('/login');
+};
 
+// Navegar a la página del producto
+const viewProduct = () => {
+  router.push('/producto');
+};
+
+// Manejar el clic en los iconos
+const iconClick = (iconName: string) => {
+  switch (iconName) {
+    case 'Bed':
+      router.push('/categoria');
+      break;
+      
+    case 'Person':
+     goTologin();
+      break;
+
+    // Añade más casos aquí si es necesario
+    default:
+      console.log('Icono no reconocido');
+  }
+};
+// Datos de los iconos
+const icons = [
+  { name: 'Flame', icon: flameOutline },
+  { name: 'Bus', icon: busOutline },
+  { name: 'Bed', icon: bedOutline },
+  { name: 'Calendar', icon: calendarNumberOutline },
+  { name: 'Person', icon: personCircleOutline }
+];
+
+
+
+// logica de registro 
 const form = ref({
   rut: '',
   nombre: '',
@@ -167,6 +229,22 @@ ion-content {
 .small-avatar {
   width: 40px;
   height: 40px;
+}
+
+
+
+  /* Estilo de iconos */
+  .icon-col {
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  transition: transform 0.3s;
+}
+
+.icon-col:hover {
+  transform: scale(1.1);
 }
 </style>
 

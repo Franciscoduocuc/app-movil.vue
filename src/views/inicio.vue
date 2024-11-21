@@ -2,7 +2,7 @@
   <ion-menu content-id="main-content" side="start">
     <ion-header>
       <ion-toolbar color="primary">
-        <ion-title>Catálogo</ion-title>
+        <ion-title>Inicio</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -36,35 +36,37 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Hotel Lux</ion-title>
-        <ion-avatar slot="end" class="small-avatar" @click="goTologin">
-          <img alt="Avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
       </ion-toolbar>
     </ion-header>
 
+    <!--footer down-->
+    <ion-footer class="footer" translucent>
+      <ion-toolbar>
+        <ion-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2" class="ion-padding icon-col" v-for="icon in icons" :key="icon.name">
+                <ion-icon :icon="icon.icon" @click="iconClick(icon.name)"></ion-icon>
+              </ion-col>
+            </ion-row>
+         </ion-grid>
+       </ion-title>
+      </ion-toolbar>
+    </ion-footer>
+
+    <!--start content-->
     <ion-content>
       <ion-breadcrumb>
         <ion-breadcrumb-item href="/home">Inicio</ion-breadcrumb-item>
-        <ion-breadcrumb-item active>Catálogo</ion-breadcrumb-item>
       </ion-breadcrumb>
 
-      <!-- Iconos en la parte superior -->
-      <ion-grid>
-        <ion-row>
-          <ion-col size="2" class="ion-padding icon-col" v-for="icon in icons" :key="icon.name">
-            <ion-icon :icon="icon.icon" @click="iconClick(icon.name)"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <div class="datetime-container">
-        <ion-datetime 
-          presentation="date" 
-          :prefer-wheel="true" 
-          :min="minDate" 
-          :max="maxDate">
-        </ion-datetime>
-      </div>
+      <swiper>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+      </swiper>
 
       <!-- Sección de Destinos Más Buscados -->
       <div class="destinations-section">
@@ -86,43 +88,41 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
-      <!-- Sección de Preguntas Frecuentes -->
-      <div class="faq-section">
-        <h2>Preguntas Frecuentes</h2>
-        <ion-list>
-          <div class="faq" v-for="(faq, index) in faqs" :key="index">
-            <div class="faq-question" @click="toggleFAQ(index)">
-              <h4>{{ faq.question }}</h4>
-              <ion-icon :icon="faq.show ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
-            </div>
-            <div v-if="faq.show" class="faq-answer">
-              <p>{{ faq.answer }}</p>
-            </div>
-          </div>
-        </ion-list>
-      </div>
-
       <!-- Sección de Contacto -->
       <div class="contact-section">
         <h2>Contacto</h2>
-        <a href="mailto:example@gmail.com" class="contact-link">
-          <ion-icon icon="mail-outline"></ion-icon>
-          <span>example@gmail.com</span>
-        </a>
+        <ion-label class="contact-item">
+          <a href="mailto:example@gmail.com" class="contact-link">
+            <span>example@gmail.com</span>
+          </a>
+        </ion-label>
+        <ion-label class="contact-item">
+          <a href="/preguntas" class="contact-link">
+            <span>Preguntas frecuentes</span>
+          </a>
+        </ion-label>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
+
+
+
+
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { flameOutline, carOutline, busOutline, bedOutline, calendarNumberOutline } from 'ionicons/icons';
+import { flameOutline, carOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar, IonLabel  } from '@ionic/vue';
+
+import 'swiper/css';
+import '@ionic/vue/css/ionic-swiper.css';
 
 // Usamos Vue Router para la navegación
 const router = useRouter();
-
 const goTologin = () => {
   router.push('/login');
 };
@@ -134,18 +134,27 @@ const viewProduct = () => {
 
 // Manejar el clic en los iconos
 const iconClick = (iconName: string) => {
-  if (iconName === 'Bed') {
-    router.push('/categoria');
+  switch (iconName) {
+    case 'Bed':
+      router.push('/categoria');
+      break;
+      
+    case 'Person':
+     goTologin();
+      break;
+
+    // Añade más casos aquí si es necesario
+    default:
+      console.log('Icono no reconocido');
   }
 };
-
 // Datos de los iconos
 const icons = [
   { name: 'Flame', icon: flameOutline },
-  { name: 'Car', icon: carOutline },
   { name: 'Bus', icon: busOutline },
   { name: 'Bed', icon: bedOutline },
   { name: 'Calendar', icon: calendarNumberOutline },
+  { name: 'Person', icon: personCircleOutline }
 ];
 
 // Datos de las zonas
@@ -154,26 +163,10 @@ const zones = [
   { title: 'Zona 2', image: 'https://ionicframework.com/docs/img/demos/card-media.png' },
   { title: 'Zona 3', image: 'https://ionicframework.com/docs/img/demos/card-media.png' },
 ];
-
-// Datos de preguntas frecuentes
-const faqs = ref([
-  { question: '¿Cuál es el horario de check-in y check-out?', answer: 'El check-in es a las 3 PM y el check-out es a las 11 AM.', show: false },
-  { question: '¿Se permite fumar en las habitaciones?', answer: 'No, todas las habitaciones son para no fumadores.', show: false },
-  { question: '¿Ofrecen servicio de transporte al aeropuerto?', answer: 'Sí, ofrecemos servicio de transporte bajo petición.', show: false },
-  { question: '¿Hay Wi-Fi disponible?', answer: 'Sí, ofrecemos Wi-Fi gratuito en todas las áreas.', show: false },
-  { question: '¿Aceptan mascotas?', answer: 'No, no se permiten mascotas en las instalaciones.', show: false },
-]);
-
-// Rango de años para el ion-datetime
-const currentYear = new Date().getFullYear();
-const minDate = `${currentYear}-01-01`; // Fecha mínima (año actual)
-const maxDate = `${currentYear + 5}-12-31`; // Fecha máxima (5 años en el futuro)
-
-// Función para alternar la visibilidad de la respuesta de las preguntas frecuentes
-const toggleFAQ = (index: number) => {
-  faqs.value[index].show = !faqs.value[index].show;
-};
 </script>
+
+
+
 
 <style scoped>
 /* Estilo del menú */
@@ -181,9 +174,16 @@ ion-header {
   background-color: #1b77ce;
 }
 
+/* style of footer  */
+.footer {
+  border-radius: 150px; /* Bordes redondeados */
+  border: 2px solid transparent; /* Borde de 2px negro */
+  background-color: transparent;
+}
+
+
 /* Estilo de iconos */
 .icon-col {
-  background-color: #135d54;
   color: #fff;
   text-align: center;
   border-radius: 10px;
@@ -194,20 +194,6 @@ ion-header {
 
 .icon-col:hover {
   transform: scale(1.1);
-}
-
-/* Estilo para reducir el tamaño del avatar */
-.small-avatar {
-  width: 40px;
-  height: 40px;
-}
-
-/* Estilos para centrar el ion-datetime */
-.datetime-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
 }
 
 .card {
@@ -236,34 +222,28 @@ ion-toolbar {
   margin: 20px 0; /* Margen superior e inferior */
 }
 
-/* Estilo de la sección de FAQ */
-.faq-section {
-  padding: 20px;
-  background-color: #000; /* Fondo negro */
-  color: #fff; /* Texto en blanco */
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-top: 20px; /* Espaciado superior */
-}
 
-.faq {
-  margin: 15px 0;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-}
-
-.faq-question {
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-/* Estilo de contacto */
 .contact-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre los elementos */
   padding: 20px;
-  background-color: #3a80e9;
+  background-color: #1b77ce;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 20px 0; /* Margen superior e inferior */
+}
+
+.contact-item {
+  display: block; /* Asegura que cada elemento se muestre como bloque */
+}
+
+.contact-link {
+  text-decoration: none;
+  color: var(--ion-color-primary); /* O cualquier color deseado */
+}
+
+.contact-link span {
+  font-weight: bold;
 }
 </style>

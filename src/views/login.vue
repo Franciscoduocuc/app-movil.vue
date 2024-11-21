@@ -42,6 +42,13 @@
       </ion-toolbar>
     </ion-header>
 
+    <ion-toolbar>
+      <ion-breadcrumbs>
+        <ion-breadcrumb href="/home">Inicio</ion-breadcrumb>
+        <ion-breadcrumb href="/login">iniciar sesión</ion-breadcrumb>
+      </ion-breadcrumbs>
+    </ion-toolbar>
+
     <ion-content>
       <section class="form-login">
         <h4>Iniciar Sesión</h4>

@@ -43,15 +43,23 @@
     </ion-header>
 
     <ion-content>
+
+      <!-- Barra de navegación secundaria -->
+      <ion-toolbar>
+        <ion-breadcrumbs>
+          <ion-breadcrumb href="/home">Inicio</ion-breadcrumb>
+          <ion-breadcrumb href="/categoria">Categoría</ion-breadcrumb>
+          <ion-breadcrumb href="/producto">Categoría</ion-breadcrumb>
+        </ion-breadcrumbs>
+      </ion-toolbar>
+
+
       <!-- Sección del calendario -->
-      <div class="datetime-container">
-        <ion-datetime 
-          presentation="date" 
-          :prefer-wheel="true" 
-          :min="minDate" 
-          :max="maxDate">
-        </ion-datetime>
-      </div>
+      <ion-datetime-button datetime="datetime" class="datetime-container"></ion-datetime-button>
+      <ion-modal :keep-contents-mounted="true">
+        <ion-datetime id="datetime"></ion-datetime>
+      </ion-modal>
+
 
       <!-- Sección de imágenes -->
       <div class="image-section">
@@ -100,19 +108,68 @@
         </ion-row>
       </ion-grid>
     </ion-content>
+
+    <!--footer down-->
+    <ion-footer class="footer" translucent>
+      <ion-toolbar>
+        <ion-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2" class="ion-padding icon-col" v-for="icon in icons_1" :key="icon.name">
+                <ion-icon :icon="icon.icon_1" @click="iconClick(icon.name)"></ion-icon>
+              </ion-col>
+            </ion-row>
+         </ion-grid>
+       </ion-title>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
+  
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { busOutline, wifi, barbell, cellular, easel, wine  } from 'ionicons/icons';
+import { busOutline, wifi, barbell, cellular,  wine  } from 'ionicons/icons';
+import { flameOutline, carOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
+import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar, IonLabel  } from '@ionic/vue';
 
+
+// Usamos Vue Router para la navegación
 const router = useRouter();
-
 const goTologin = () => {
   router.push('/login');
 };
+
+// Navegar a la página del producto
+const viewProduct = () => {
+  router.push('/producto');
+};
+
+// Manejar el clic en los iconos
+const iconClick = (iconName: string) => {
+  switch (iconName) {
+    case 'Bed':
+      router.push('/categoria');
+      break;
+      
+    case 'Person':
+     goTologin();
+      break;
+
+    // Añade más casos aquí si es necesario
+    default:
+      console.log('Icono no reconocido');
+  }
+};
+// Datos de los iconos
+const icons_1 = [
+  { name: 'Flame', icon_1: flameOutline },
+  { name: 'Bus', icon_1: busOutline },
+  { name: 'Bed', icon_1: bedOutline },
+  { name: 'Calendar', icon_1: calendarNumberOutline },
+  { name: 'Person', icon_1: personCircleOutline }
+];
 
 // Rango de años para el ion-datetime
 const currentYear = new Date().getFullYear();
@@ -125,7 +182,6 @@ const icons = [
   { name: 'wifi', icon: wifi, disabled: true },
   { name: 'barbell', icon: barbell, disabled: false },
   { name: 'cellular', icon: cellular, disabled: true },
-  { name: 'easel', icon: easel, disabled: false },
   { name: 'wine', icon: wine, disabled: false },
 ];
 </script>

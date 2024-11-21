@@ -5,6 +5,7 @@ import join from '../views/join.vue';
 import login from '../views/login.vue';
 import categoria from '../views/categoria.vue';
 import producto from '../views/producto.vue';
+import preguntas from '../views/preguntas.vue';
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -36,6 +37,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/producto',
     name: 'producto',
     component: producto
+  },
+  {
+    path: '/preguntas',
+    name: 'preguntas',
+    component: preguntas
   }
 ]
 
