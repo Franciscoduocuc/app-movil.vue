@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-
+import { CapacitorSQLite } from '@capacitor-community/sqlite';
 import { IonicVue } from '@ionic/vue';
 
 /* Core CSS required for Ionic components to work properly */
@@ -20,23 +20,34 @@ import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import '@ionic/vue/css/palettes/dark.always.css'; */
-/* @import '@ionic/vue/css/palettes/dark.class.css'; */
+/* Theme variables */
 import '@ionic/vue/css/palettes/dark.system.css';
 
-/* Theme variables */
 
+const initializeSQLite = async () => {
+  try {
+    // Comprueba si SQLite está disponible en el entorno actual
+    const isAvailable = await CapacitorSQLite.isAvailable();
+    console.log('SQLite is available:', isAvailable);
+
+    if (isAvailable && CapacitorSQLite.isWebStore) {
+      // Inicializa el almacenamiento web si estás trabajando en un navegador
+      await CapacitorSQLite.initWebStore();
+      console.log('Web store initialized successfully.');
+    }
+  } catch (error) {
+    console.error('Failed to initialize SQLite:', error);
+  }
+};
+
+// Crea la aplicación Vue
 const app = createApp(App)
   .use(IonicVue)
   .use(router);
 
-router.isReady().then(() => {
-  app.mount('#app');
+// Inicializa SQLite y luego monta la aplicación
+initializeSQLite().then(() => {
+  router.isReady().then(() => {
+    app.mount('#app');
+  });
 });

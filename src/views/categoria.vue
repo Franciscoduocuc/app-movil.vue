@@ -18,12 +18,6 @@
           <ion-label><h4>Ofertas</h4></ion-label>
         </ion-item>
         <ion-item button detail href="#">
-          <ion-label><h4>Transporte</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
-          <ion-label><h4>Traslado</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
           <ion-label><h4>Reserva</h4></ion-label>
         </ion-item>
       </ion-list>
@@ -106,11 +100,6 @@ import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar, IonLabel  } from 
 // Configuración de Vue Router para la navegación
 const router = useRouter();
 
-// Función para navegar a la página de login
-const goTologin = () => {
-  router.push('/login');
-};
-
 // Función para navegar a la página de detalles del producto
 const viewProduct = () => {
   router.push('/producto');
@@ -122,9 +111,15 @@ const iconClick = (iconName: string) => {
     case 'Bed':
       router.push('/categoria');
       break;
+
     case 'Person':
-      goTologin();
+      router.push('/login');
       break;
+      
+    case 'Flame':
+      router.push('/home');
+      break;
+
     default:
       console.log('Icono no reconocido');
   }
@@ -146,6 +141,7 @@ const zones = [
   { title: 'SANTIAGO', image: 'https://ionicframework.com/docs/img/demos/card-media.png' }
 ];
 </script>
+
 
 <style scoped>
 /* Estilos para el menú de navegación */

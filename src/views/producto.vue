@@ -17,12 +17,6 @@
           <ion-label><h4>Ofertas</h4></ion-label>
         </ion-item>
         <ion-item button detail href="#">
-          <ion-label><h4>Transporte</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
-          <ion-label><h4>Traslado</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
           <ion-label><h4>Reserva</h4></ion-label>
         </ion-item>
       </ion-list>
@@ -36,9 +30,6 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Hotel Lux</ion-title>
-        <ion-avatar slot="end" class="small-avatar" @click="goTologin">
-          <img alt="Avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
       </ion-toolbar>
     </ion-header>
 
@@ -62,13 +53,13 @@
 
 
       <!-- Sección de imágenes -->
-      <div class="image-section">
-        <img class="large-image" src="https://ionicframework.com/docs/img/demos/card-media.png" alt="Imagen Grande" />
-        <div class="small-images">
-          <img class="small-image" src="https://ionicframework.com/docs/img/demos/card-media.png" alt="Imagen Pequeña 1" />
-          <img class="small-image" src="https://ionicframework.com/docs/img/demos/card-media.png" alt="Imagen Pequeña 2" />
-        </div>
-      </div>
+      <swiper>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+        <swiper-slide><ion-img src="https://ionicframework.com/docs/img/demos/card-media.png"></ion-img></swiper-slide>
+      </swiper>
 
       <!-- Sección de detalles de la zona y habitación -->
       <div class="details-section">
@@ -80,6 +71,7 @@
           <ion-icon name="star" style="color: yellow;"></ion-icon>
           <ion-icon name="star-outline" style="color: yellow;"></ion-icon>
         </div>
+
         <div class="room-details">
           <h4>$120 / noche</h4>
           <ion-select placeholder="Tipo de habitación" interface="popover">
@@ -131,20 +123,13 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { busOutline, wifi, barbell, cellular,  wine  } from 'ionicons/icons';
-import { flameOutline, carOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
+import { flameOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
 import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar, IonLabel  } from '@ionic/vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
 
 // Usamos Vue Router para la navegación
 const router = useRouter();
-const goTologin = () => {
-  router.push('/login');
-};
-
-// Navegar a la página del producto
-const viewProduct = () => {
-  router.push('/producto');
-};
 
 // Manejar el clic en los iconos
 const iconClick = (iconName: string) => {
@@ -154,7 +139,11 @@ const iconClick = (iconName: string) => {
       break;
       
     case 'Person':
-     goTologin();
+      router.push('/login');
+      break;
+      
+    case 'Flame':
+      router.push('/home');
       break;
 
     // Añade más casos aquí si es necesario
@@ -162,6 +151,7 @@ const iconClick = (iconName: string) => {
       console.log('Icono no reconocido');
   }
 };
+
 // Datos de los iconos
 const icons_1 = [
   { name: 'Flame', icon_1: flameOutline },
@@ -170,11 +160,6 @@ const icons_1 = [
   { name: 'Calendar', icon_1: calendarNumberOutline },
   { name: 'Person', icon_1: personCircleOutline }
 ];
-
-// Rango de años para el ion-datetime
-const currentYear = new Date().getFullYear();
-const minDate = `${currentYear}-01-01`; // Fecha mínima (año actual)
-const maxDate = `${currentYear + 5}-12-31`; // Fecha máxima (5 años en el futuro)
 
 // Lista de iconos con estado de habilitado/deshabilitado
 const icons = [
@@ -185,6 +170,9 @@ const icons = [
   { name: 'wine', icon: wine, disabled: false },
 ];
 </script>
+
+
+
 
 <style scoped>
 /* Estilo del menú */

@@ -17,12 +17,6 @@
           <ion-label><h4>Ofertas</h4></ion-label>
         </ion-item>
         <ion-item button detail href="#">
-          <ion-label><h4>Transporte</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
-          <ion-label><h4>Traslado</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
           <ion-label><h4>Reserva</h4></ion-label>
         </ion-item>
       </ion-list>
@@ -84,21 +78,10 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { flameOutline, carOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
-import { IonDatetime, IonDatetimeButton, IonModal } from '@ionic/vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
 import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar  } from '@ionic/vue';
 
 // Usamos Vue Router para la navegación
 const router = useRouter();
-
-const goTologin = () => {
-  router.push('/login');
-};
-
-// Navegar a la página del producto
-const viewProduct = () => {
-  router.push('/producto');
-};
 
 // Manejar el clic en los iconos
 const iconClick = (iconName: string) => {
@@ -108,7 +91,11 @@ const iconClick = (iconName: string) => {
       break;
       
     case 'Person':
-     goTologin();
+      router.push('/login');
+      break;
+      
+    case 'Flame':
+      router.push('/home');
       break;
 
     // Añade más casos aquí si es necesario
@@ -116,6 +103,7 @@ const iconClick = (iconName: string) => {
       console.log('Icono no reconocido');
   }
 };
+
 // Datos de los iconos
 const icons = [
   { name: 'Flame', icon: flameOutline },
@@ -140,11 +128,6 @@ const faqs = ref([
   { question: '¿El hotel ofrece servicios para personas con discapacidad?', answer: 'Sí, nuestras instalaciones son accesibles y ofrecemos servicios especiales para garantizar su comodidad.', show: false },
   {question: '¿Cómo puedo gastar mis puntos acumulados?', answer: 'Puede gastar sus puntos acumulados en diversas opciones, como descuentos en futuras reservas, mejoras de habitación, o canjeándolos por servicios adicionales como excursiones o comidas. Simplemente dirígete a la sección "Mis Puntos" en la aplicación para ver las opciones disponibles y realizar tu canje.', show: false} 
 ]);
-
-// Rango de años para el ion-datetime
-const currentYear = new Date().getFullYear();
-const minDate = `${currentYear}-01-01`; // Fecha mínima (año actual)
-const maxDate = `${currentYear + 5}-12-31`; // Fecha máxima (5 años en el futuro)
 
 // Función para alternar la visibilidad de la respuesta de las preguntas frecuentes
 const toggleFAQ = (index: number) => {

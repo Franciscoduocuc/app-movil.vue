@@ -17,12 +17,6 @@
           <ion-label><h4>Ofertas</h4></ion-label>
         </ion-item>
         <ion-item button detail href="#">
-          <ion-label><h4>Transporte</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
-          <ion-label><h4>Traslado</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
           <ion-label><h4>Reserva</h4></ion-label>
         </ion-item>
       </ion-list>
@@ -112,7 +106,6 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { flameOutline, carOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -123,9 +116,6 @@ import '@ionic/vue/css/ionic-swiper.css';
 
 // Usamos Vue Router para la navegación
 const router = useRouter();
-const goTologin = () => {
-  router.push('/login');
-};
 
 // Navegar a la página del producto
 const viewProduct = () => {
@@ -140,7 +130,11 @@ const iconClick = (iconName: string) => {
       break;
       
     case 'Person':
-     goTologin();
+      router.push('/login');
+      break;
+      
+    case 'Flame':
+      router.push('/home');
       break;
 
     // Añade más casos aquí si es necesario

@@ -17,12 +17,6 @@
           <ion-label><h4>Ofertas</h4></ion-label>
         </ion-item>
         <ion-item button detail href="#">
-          <ion-label><h4>Transporte</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
-          <ion-label><h4>Traslado</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
           <ion-label><h4>Reserva</h4></ion-label>
         </ion-item>
       </ion-list>
@@ -36,20 +30,31 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Hotel Lux</ion-title>
-        <ion-avatar slot="end" class="small-avatar" @click="goToLogin">
-          <img alt="Avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
       </ion-toolbar>
     </ion-header>
 
     <ion-toolbar>
       <ion-breadcrumbs>
         <ion-breadcrumb href="/home">Inicio</ion-breadcrumb>
-        <ion-breadcrumb href="/login">iniciar sesión</ion-breadcrumb>
-        <ion-breadcrumb href="/join">registrarse</ion-breadcrumb>
+        <ion-breadcrumb href="/login">Iniciar sesión</ion-breadcrumb>
+        <ion-breadcrumb href="/join">Registrarse</ion-breadcrumb>
       </ion-breadcrumbs>
     </ion-toolbar>
 
+    <ion-content>
+      <section class="form-register">
+        <h4>Registro</h4>
+        <form id="form" @submit.prevent="handleSubmit">
+          <input class="controls" type="text" name="rut" v-model="form.rut" required placeholder="Ingrese su RUT" />
+          <input class="controls" type="text" name="nombre" v-model="form.nombre" required placeholder="Ingrese su Nombre" />
+          <input class="controls" type="number" name="edad" v-model="form.edad" required placeholder="Ingrese su Edad" min="18" max="100" />
+          <input class="controls" type="email" name="correo" v-model="form.correo" required placeholder="Ingrese su Correo" />
+          <input class="controls" type="password" name="password" v-model="form.password" required placeholder="Ingrese Contraseña" minlength="6" />
+          <p>Estoy de acuerdo con <a href="#">Términos y Condiciones</a></p>
+          <input class="botons" type="submit" value="Registrar" />
+        </form>
+      </section>
+    </ion-content>
 
     <ion-footer class="footer">
       <ion-toolbar>
@@ -65,41 +70,17 @@
       </ion-toolbar>
     </ion-footer>
 
-    <ion-content>
-      <section class="form-register">
-        <h4>Registro</h4>
-        <form id="form" @submit.prevent="handleSubmit">
-          <input class="controls" type="text" name="rut" v-model="form.rut" required placeholder="Ingrese su RUT" />
-          <input class="controls" type="text" name="nombre" v-model="form.nombre" required placeholder="Ingrese su Nombre" />
-          <input class="controls" type="text" name="apellido" v-model="form.appaterno" required placeholder="Ingrese su Apellido" />
-          <input class="controls" type="number" name="edad" v-model="form.edad" required placeholder="Ingrese su Edad" min="18" max="100" />
-          <input class="controls" type="email" name="correo" v-model="form.correo" required placeholder="Ingrese su Correo" />
-          <input class="controls" type="tel" name="numero" v-model="form.numero" required placeholder="Ingrese su Teléfono" />
-          <input class="controls" type="password" name="password" v-model="form.password" required placeholder="Ingrese Contraseña" minlength="6" />
-          <p>Estoy de acuerdo con <a href="#">Términos y Condiciones</a></p>
-          <input class="botons" type="submit" value="Registrar" />
-        </form>
-      </section>
-    </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { flameOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
-import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar  } from '@ionic/vue';
+import { flameOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline } from 'ionicons/icons';
+import { dbService } from '../database/dbService'; // Asegúrate de que la ruta sea correcta
 
 // Usamos Vue Router para la navegación
 const router = useRouter();
-const goTologin = () => {
-  router.push('/login');
-};
-
-// Navegar a la página del producto
-const viewProduct = () => {
-  router.push('/producto');
-};
 
 // Manejar el clic en los iconos
 const iconClick = (iconName: string) => {
@@ -107,16 +88,15 @@ const iconClick = (iconName: string) => {
     case 'Bed':
       router.push('/categoria');
       break;
-      
     case 'Person':
-     goTologin();
+      router.push('/login');
       break;
-
     // Añade más casos aquí si es necesario
     default:
       console.log('Icono no reconocido');
   }
 };
+
 // Datos de los iconos
 const icons = [
   { name: 'Flame', icon: flameOutline },
@@ -126,36 +106,60 @@ const icons = [
   { name: 'Person', icon: personCircleOutline }
 ];
 
-
-
-// logica de registro 
+// Definir la referencia reactiva 'form'
 const form = ref({
   rut: '',
   nombre: '',
-  appaterno: '',
   password: '',
   edad: '',
   correo: '',
-  numero: ''
 });
 
-const goToLogin = () => {
-  router.push('/login');
+// Función para manejar el envío del formulario
+const handleSubmit = async () => {
+  const { nombre, correo } = form.value; // Extrae los valores necesarios
+  try {
+    // Llama a dbService.createUser para guardar los datos en SQLite
+    await dbService.createUser(nombre, correo);
+
+    // Limpia el formulario después de guardar los datos
+    form.value = {
+      rut: '',
+      nombre: '',
+      password: '',
+      edad: '',
+      correo: '',
+    };
+
+    // Muestra una notificación de éxito
+    alert('Registro completado con éxito.');
+  } catch (error) {
+    // Manejo de errores
+    console.error('Error al registrar:', error);
+    alert('Ocurrió un error al registrar los datos.');
+  }
 };
 
-// Función para manejar el envío del formulario
-const handleSubmit = () => {
-  // Aquí puedes agregar la lógica para registrar al usuario
-  console.log('Registro completado:', form.value);
+// Inicializa la base de datos al cargar el componente
+const initializeDatabase = async () => {
+  try {
+    await dbService.initializeDatabase();
+    console.log('Base de datos inicializada.');
+  } catch (error) {
+    console.error('Error al inicializar la base de datos:', error);
+  }
 };
+initializeDatabase();
 </script>
+
+
+
 
 <style scoped>
 ion-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Asegura que ocupa toda la altura de la pantalla */
   background-color: #f0f0f0; /* Color de fondo opcional */
 }
 
@@ -246,5 +250,23 @@ ion-content {
 .icon-col:hover {
   transform: scale(1.1);
 }
-</style>
 
+
+/* style of footer  */
+.footer {
+  border-radius: 150px; /* Bordes redondeados */
+  border: 2px solid transparent; /* Borde de 2px negro */
+  background-color: transparent;
+}
+
+
+/* Estilo de iconos */
+.icon-col {
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  transition: transform 0.3s;
+}
+</style>

@@ -17,12 +17,6 @@
           <ion-label><h4>Ofertas</h4></ion-label>
         </ion-item>
         <ion-item button detail href="#">
-          <ion-label><h4>Transporte</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
-          <ion-label><h4>Traslado</h4></ion-label>
-        </ion-item>
-        <ion-item button detail href="#">
           <ion-label><h4>Reserva</h4></ion-label>
         </ion-item>
       </ion-list>
@@ -36,11 +30,9 @@
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Hotel Lux</ion-title>
-        <ion-avatar slot="end" class="small-avatar" @click="goToLogin">
-          <img alt="Avatar" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-        </ion-avatar>
       </ion-toolbar>
     </ion-header>
+
 
     <ion-toolbar>
       <ion-breadcrumbs>
@@ -52,7 +44,7 @@
     <ion-content>
       <section class="form-login">
         <h4>Iniciar Sesión</h4>
-        <form id="form" @submit.prevent="handleLogin">
+        <form id="form">
           <input class="controls" type="email" name="correo" v-model="form.correo" required placeholder="Ingrese su Correo" />
           <input class="controls" type="password" name="password" v-model="form.password" required placeholder="Ingrese su Contraseña" />
           <p><a href="#">Términos y Condiciones</a></p>
@@ -61,30 +53,70 @@
         </form>
       </section>
     </ion-content>
+
+    <!--footer-->
+    <ion-footer class="footer" translucent>
+      <ion-toolbar>
+        <ion-title>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="2" class="ion-padding icon-col" v-for="icon in icons" :key="icon.name">
+                <ion-icon :icon="icon.icon" @click="iconClick(icon.name)"></ion-icon>
+              </ion-col>
+            </ion-row>
+         </ion-grid>
+       </ion-title>
+      </ion-toolbar>
+    </ion-footer>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { flameOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline, } from 'ionicons/icons';
+import { IonContent, IonPage, IonFooter, IonTitle, IonToolbar  } from '@ionic/vue';
 
+// Usamos Vue Router para la navegación
 const router = useRouter();
+
+// Manejar el clic en los iconos
+const iconClick = (iconName: string) => {
+  switch (iconName) {
+    case 'Bed':
+      router.push('/categoria');
+      break;
+      
+    case 'Person':
+      router.push('/login');
+      break;
+      
+    case 'Flame':
+      router.push('/home');
+      break;
+      
+    // Añade más casos aquí si es necesario
+
+    default:
+      console.log('Icono no reconocido');
+  }
+};
+// Datos de los iconos
+const icons = [
+  { name: 'Flame', icon: flameOutline },
+  { name: 'Bus', icon: busOutline },
+  { name: 'Bed', icon: bedOutline },
+  { name: 'Calendar', icon: calendarNumberOutline },
+  { name: 'Person', icon: personCircleOutline }
+];
+
 
 const form = ref({
   correo: '',
   password: ''
 });
 
-// Función para manejar el envío del formulario
-const handleLogin = () => {
-  // Aquí puedes agregar la lógica para autenticar al usuario
-  console.log('Inicio de sesión:', form.value);
-};
 
-// Redirigir al usuario a la página de inicio de sesión
-const goToLogin = () => {
-  router.push('/login');
-};
 </script>
 
 <style scoped>
@@ -92,8 +124,6 @@ ion-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh; /* Asegura que ocupa toda la altura de la pantalla */
-  background-color: #f0f0f0; /* Color de fondo opcional */
 }
 
 /* Estilo de inicio de sesión */
