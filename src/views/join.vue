@@ -77,7 +77,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { flameOutline, busOutline, bedOutline, calendarNumberOutline, personCircleOutline } from 'ionicons/icons';
-import { dbService } from '../database/dbService'; // Asegúrate de que la ruta sea correcta
 
 // Usamos Vue Router para la navegación
 const router = useRouter();
@@ -91,7 +90,6 @@ const iconClick = (iconName: string) => {
     case 'Person':
       router.push('/login');
       break;
-    // Añade más casos aquí si es necesario
     default:
       console.log('Icono no reconocido');
   }
@@ -117,43 +115,37 @@ const form = ref({
 
 // Función para manejar el envío del formulario
 const handleSubmit = async () => {
-  const { nombre, correo } = form.value; // Extrae los valores necesarios
+  const { nombre, correo, password, rut, edad } = form.value; // Extrae los valores necesarios
   try {
-    // Llama a dbService.createUser para guardar los datos en SQLite
-    await dbService.createUser(nombre, correo);
+    // Llamar a la API para guardar el usuario
+    const response = await fetch('http://localhost:3000/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nombre, correo, password, rut, edad }),
+    });
 
-    // Limpia el formulario después de guardar los datos
-    form.value = {
-      rut: '',
-      nombre: '',
-      password: '',
-      edad: '',
-      correo: '',
-    };
+    if (response.ok) {
+      form.value = {
+        rut: '',
+        nombre: '',
+        password: '',
+        edad: '',
+        correo: '',
+      };
 
-    // Muestra una notificación de éxito
-    alert('Registro completado con éxito.');
+      alert('Registro completado con éxito.');
+      router.push('/login'); // Redirige al login después de registrar
+    } else {
+      throw new Error('Error en el registro');
+    }
   } catch (error) {
-    // Manejo de errores
     console.error('Error al registrar:', error);
     alert('Ocurrió un error al registrar los datos.');
   }
 };
-
-// Inicializa la base de datos al cargar el componente
-const initializeDatabase = async () => {
-  try {
-    await dbService.initializeDatabase();
-    console.log('Base de datos inicializada.');
-  } catch (error) {
-    console.error('Error al inicializar la base de datos:', error);
-  }
-};
-initializeDatabase();
 </script>
-
-
-
 
 <style scoped>
 ion-content {
@@ -235,10 +227,8 @@ ion-content {
   height: 40px;
 }
 
-
-
-  /* Estilo de iconos */
-  .icon-col {
+/* Estilo de iconos */
+.icon-col {
   color: #fff;
   text-align: center;
   border-radius: 10px;
@@ -251,14 +241,12 @@ ion-content {
   transform: scale(1.1);
 }
 
-
 /* style of footer  */
 .footer {
   border-radius: 150px; /* Bordes redondeados */
   border: 2px solid transparent; /* Borde de 2px negro */
   background-color: transparent;
 }
-
 
 /* Estilo de iconos */
 .icon-col {
